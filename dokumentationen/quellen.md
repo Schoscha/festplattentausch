@@ -17,3 +17,9 @@
 
 ## BitLocker-Schlüssel online
 - https://account.microsoft.com/devices/recoverykey
+
+## Veeam Agent – Kommandozeile (Recherche 2026-10-03)
+- Stille Installation: `VeeamAgentWindows_<ver>.exe /silent /accepteula /acceptthirdpartylicenses /acceptlicensingpolicy /acceptrequiredsoftware` (Admin-Shell) – https://wingetly.io/apps/veeam/veeam-agent/silent-install
+- `Veeam.Agent.Configurator.exe -import` (Job per XML anlegen) nur in Workstation-/Server-Edition, **nicht Free** – https://helpcenter.veeam.com/docs/agentforwindows/configurator/import.html
+- `Veeam.EndPoint.Manager.exe /standalone [<Ordner>]` erzeugt eine Vollsicherung, setzt aber einen angelegten Job voraus – https://helpcenter.veeam.com/docs/agentforwindows/userguide/backup_cmd.html
+- Folge: In der Free-Edition muss der Backup-Job einmal in der GUI angelegt werden.
