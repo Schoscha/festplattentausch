@@ -19,7 +19,7 @@ Laptop hat nur einen M.2-Steckplatz, kein USB-M.2-Adapter vorhanden.
 - [x] README.md mit Optionsvergleich
 - [x] Nutzer: Schritt 1 (Bericht 2026-10-03 03:30)
 - [x] Nutzer: Schritt 2 Veeam installiert, Schritt 4 Recovery-Stick erstellt (E:)
-- [ ] Nutzer: Schritt 3 Backup nach D:\\VeeamBackup, danach Boot-Test Stick (ThinkPad: F12)
+- [ ] Nutzer: Schritt 3 Backup nach D:\VeeamBackup, danach Boot-Test Stick (ThinkPad: F12)
 - [ ] Nutzer: Schritt 5–7 (Tausch, Restore, Kontrolle)
 - [ ] Ggf. WinRE-Partition verschieben, falls hinter C:
 
