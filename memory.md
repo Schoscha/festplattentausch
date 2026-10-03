@@ -1,37 +1,63 @@
 # memory.md – Festplattentausch
 
+> Stand: 2026-10-03. Wer hier weitermacht, liest zuerst diesen Abschnitt.
+
 ## Ziel
-Interne M.2-SSD eines Windows-11-Laptops auf neue SSD (doppelte Kapazität) übertragen.
-Laptop hat nur einen M.2-Steckplatz, kein USB-M.2-Adapter vorhanden.
+Die interne M.2-SSD des Laptops „Sascha-Lenovo“ wird gegen eine neue M.2-2280-NVMe-SSD mit doppelter Kapazität (512 GB) getauscht.
+Der Laptop hat nur einen M.2-Steckplatz, einen USB-M.2-Adapter gibt es nicht.
+**Methode:** Komplettsicherung mit Veeam Agent Free auf die externe Festplatte D: → SSD tauschen → Sicherung vom Veeam-USB-Stick zurückspielen. Die vollständige Anleitung steht in `ANLEITUNG.md`.
+
+## Aktueller Stand: hier weitermachen
+**Nächster Schritt: Schritt 3, die Komplettsicherung. Sie ist noch NICHT gelaufen.**
+- Veeam ist installiert, der Recovery-USB-Stick ist erstellt.
+- Der Backup-Job ist noch nicht angelegt. In der Free-Edition geht das nur über die Oberfläche, nicht per Kommandozeile:
+  ☰ → Add New Job → Name `SSD-Tausch` → Entire computer → Local storage → `D:\VeeamBackup` → Schedule-Häkchen weg → Apply → „Run the job when I click Finish“ → Finish.
+- Danach: Status prüfen (Success, Warning oder Failed), dann testen, ob der Laptop vom Stick startet (ThinkPad-Bootmenü: **F12**). Erst danach Schritt 5 (Tausch).
+
+## Desktop Commander (Fernzugriff)
+- Auf dem Laptop läuft das Remote Device, gestartet mit `npx @wonderwhy-er/desktop-commander@latest remote`.
+  - Desktop-Commander-Konto: **zweites (Gmail-)Konto des Nutzers** (Adresse siehe Chat)
+  - Device-ID: `c4f8c842-ff44-4d80-bea3-737e8f7b465e`, Name „Sascha-Lenovo“
+- **Problem:** Der Desktop-Commander-Connector in Claude (claude.ai) hängt an einem ANDEREN Desktop-Commander-Konto. Dort ist nur das Gerät „Detlef“ (cce34539-…) registriert, und es ist seit über 115 Stunden offline. Deshalb meldet `list_devices` und `ping` „No device online“, der Laptop ist für Claude nicht erreichbar.
+- **Lösung:** Unter https://claude.ai/customize/connectors bei Desktop Commander auf Disconnect und dann auf Connect klicken und mit **dem zweiten (Gmail-)Konto des Nutzers** anmelden. Danach eventuell eine neue Session starten. Die PowerShell mit dem Remote Device muss offen bleiben.
+- Das Claude-Konto hat damit nichts zu tun.
+- Das Gerät „Detlef“ ist veraltet und soll nicht verwendet werden.
+
+## Ergebnis Schritt 1 (Bericht.txt, 2026-10-03 03:30)
+| Punkt | Wert |
+|---|---|
+| Modell | LENOVO 20QGS0QU00, Windows 11 Pro 10.0.26200, UEFI, GPT |
+| Alte SSD | Toshiba KXG50ZNV256G NVMe, 238,5 GB, Healthy, Verschleiß 0 %, 35 °C |
+| Partitionen Disk 0 | 1 EFI 0,2 GB · 2 MSR 0,02 GB · 3 C: 237,38 GB · **4 Recovery 0,88 GB (liegt HINTER C:)** |
+| Belegt | 227,2 GB (C: ist fast voll) |
+| Externe Festplatte | **D:** Intenso USB 3.0, 465,8 GB, 465,7 GB frei → reicht |
+| USB-Stick | **E:**, Disk 2 „Generic Flash Disk“, 14,6 GB → ist jetzt der Veeam-Recovery-Stick |
+| Controller | Standard-NVMe, **kein RST/VMD** → keine Zusatztreiber nötig |
+| BitLocker | aus (C:, D:, E:) → kein Wiederherstellungsschlüssel nötig |
+
+**Folgen:**
+- Wegen der Recovery-Partition hinter C: lässt sich C: nach dem Restore nicht einfach vergrößern. Zuerst in Schritt 6 „Customize disk mapping → Resize“ versuchen. Klappt das nicht, in Schritt 7 die WinRE-Partition verschieben (reagentc /disable → Partition löschen → C: erweitern → Recovery neu anlegen → reagentc /enable).
+- Bei allen Laufwerksauswahlen gilt: **D: = Sicherung, E: = Stick.** Niemals verwechseln.
 
 ## Entscheidungen
-- 2026-10-03: Option B (Image auf externe Festplatte → tauschen → zurückspielen).
-- Werkzeug: Veeam Agent for Windows Free (statt Clonezilla wegen BitLocker/VMD/Resize).
-- 2026-10-03 (später): Nutzer will Desktop Commander doch nutzen → Laptop als neues Gerät einrichten
-  (`npx @wonderwhy-er/desktop-commander@latest remote` in Admin-PowerShell, Node ≥ 18).
-- 2026-10-03 (früher): Desktop Commander wird NICHT mehr verwendet (Nutzer: „Schrott“). Kein Fernzugriff auf
-  den Laptop → Nutzer führt Skripte selbst aus. Connector-Entfernung durch Nutzer:
-  https://claude.ai/customize/connectors, Gerät „Detlef“: https://mcp.desktopcommander.app/
+- Option B: Image auf externe Festplatte, tauschen, zurückspielen.
+- Werkzeug Veeam Agent Free statt Clonezilla, weil es BitLocker, VMD und das Vergrößern beim Restore beherrscht.
+- `Veeam.Agent.Configurator.exe -import` gibt es nur in der Workstation- und Server-Edition. In der Free-Edition muss der Job deshalb über die Oberfläche angelegt werden (Quellen in `dokumentationen/quellen.md`).
+- Der Nutzer will, dass Claude möglichst alles selbst ausführt. Das geht nur über Desktop Commander mit dem richtigen Konto (siehe oben).
 
 ## Tasks
-- [x] Optionen aufzeigen
-- [x] Anleitung (ANLEITUNG.md)
-- [x] scripts/vorbereitung.ps1 (nur lesend, BitLocker-Schlüssel sichern)
-- [x] scripts/nachbereitung.ps1 (C: vergrößern)
-- [x] README.md mit Optionsvergleich
-- [x] Nutzer: Schritt 1 (Bericht 2026-10-03 03:30)
-- [x] Nutzer: Schritt 2 Veeam installiert, Schritt 4 Recovery-Stick erstellt (E:)
-- [ ] Nutzer: Schritt 3 Backup nach D:\VeeamBackup, danach Boot-Test Stick (ThinkPad: F12)
-- [ ] Nutzer: Schritt 5–7 (Tausch, Restore, Kontrolle)
-- [ ] Ggf. WinRE-Partition verschieben, falls hinter C:
+- [x] Optionen aufzeigen, ANLEITUNG.md, README.md
+- [x] scripts/vorbereitung.ps1 (nur lesend), scripts/nachbereitung.ps1 (C: vergrößern)
+- [x] Skripte mit PowerShell 7 auf Syntax geprüft (0 Fehler). Fix: Der SSD-Zustand wird jetzt per DeviceId ausgelesen.
+- [x] Schritt 1: Prüfung (Bericht ausgewertet)
+- [x] Schritt 2: Veeam installiert
+- [x] Schritt 4: Recovery-Stick erstellt (E:)
+- [ ] Desktop-Commander-Connector auf das zweite (Gmail-)Konto des Nutzers umstellen (Nutzer)
+- [ ] **Schritt 3: Komplettsicherung nach D:\VeeamBackup**, Status Success
+- [ ] Boot-Test vom Stick (F12)
+- [ ] Schritt 5: SSD tauschen (alte SSD unverändert aufbewahren)
+- [ ] Schritt 6: Restore, dabei C: vergrößern
+- [ ] Schritt 7: nachbereitung.ps1, eventuell WinRE verschieben, Aktivierung prüfen
 
-## Offene Punkte
-- USB-Stick ≥ 8 GB vorhanden (bestätigt 2026-10-03).
-- 2026-10-03: Schritt 1 angefragt. Laptop nicht erreichbar → Nutzer führt Skript selbst aus.
-- 2026-10-03: Skripte per PowerShell-7-Parser geprüft (0 Fehler). Fix vorbereitung.ps1: SSD-Zustand per DeviceId statt Pipeline Disk→Get-PhysicalDisk.
-- Bericht Schritt 1 (2026-10-03): Lenovo 20QGS0QU00, Win 11 Pro 26200, UEFI/GPT.
-  SSD: Toshiba KXG50ZNV256G NVMe 238,5 GB, Healthy, Verschleiß 0 %.
-  Partitionen: 1 EFI 0,2 | 2 MSR 0,02 | 3 C: 237,38 | 4 Recovery 0,88 (HINTER C: → Schritt 7 relevant).
-  Belegt 227,2 GB (C: fast voll). Extern D: Intenso 465,8 GB, frei 465,7 GB → reicht.
-  USB-Stick = E: / Disk 2 „Generic Flash Disk“ 14,6 GB.
-  Controller: Standard-NVMe, KEIN RST/VMD. BitLocker: aus, kein Schlüssel nötig.
+## Session-Verlauf
+Siehe `dokumentationen/session-2026-10-03.md`.
