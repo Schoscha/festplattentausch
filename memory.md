@@ -7,7 +7,9 @@ Laptop hat nur einen M.2-Steckplatz, kein USB-M.2-Adapter vorhanden.
 ## Entscheidungen
 - 2026-10-03: Option B (Image auf externe Festplatte → tauschen → zurückspielen).
 - Werkzeug: Veeam Agent for Windows Free (statt Clonezilla wegen BitLocker/VMD/Resize).
-- 2026-10-03: Desktop Commander wird NICHT mehr verwendet (Nutzer: „Schrott“). Kein Fernzugriff auf
+- 2026-10-03 (später): Nutzer will Desktop Commander doch nutzen → Laptop als neues Gerät einrichten
+  (`npx @wonderwhy-er/desktop-commander@latest remote` in Admin-PowerShell, Node ≥ 18).
+- 2026-10-03 (früher): Desktop Commander wird NICHT mehr verwendet (Nutzer: „Schrott“). Kein Fernzugriff auf
   den Laptop → Nutzer führt Skripte selbst aus. Connector-Entfernung durch Nutzer:
   https://claude.ai/customize/connectors, Gerät „Detlef“: https://mcp.desktopcommander.app/
 
