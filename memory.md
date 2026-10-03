@@ -22,4 +22,5 @@ Laptop hat nur einen M.2-Steckplatz, kein USB-M.2-Adapter vorhanden.
 - [ ] Ggf. WinRE-Partition verschieben, falls hinter C:
 
 ## Offene Punkte
-- USB-Stick ≥ 8 GB für Recovery-Medium nötig (beim Nutzer noch nicht bestätigt).
+- USB-Stick ≥ 8 GB vorhanden (bestätigt 2026-10-03).
+- Warte auf Bericht.txt aus Schritt 1.

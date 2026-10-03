@@ -26,5 +26,6 @@ Weil es nur einen Steckplatz gibt, kann die neue SSD erst bespielt werden, wenn 
 ## Status
 - [x] Optionen geprüft, Option B gewählt
 - [x] Anleitung und Skripte erstellt
+- [x] Material vorhanden: externe Festplatte, USB-Stick ≥ 8 GB
 - [ ] Schritte 1–4: Prüfung, Veeam, Sicherung, Rettungsstick
 - [ ] Schritte 5–7: Tausch, Zurückspielen, Kontrolle
