@@ -16,6 +16,7 @@ Laptop hat nur einen M.2-Steckplatz, kein USB-M.2-Adapter vorhanden.
 - [x] Anleitung (ANLEITUNG.md)
 - [x] scripts/vorbereitung.ps1 (nur lesend, BitLocker-Schlüssel sichern)
 - [x] scripts/nachbereitung.ps1 (C: vergrößern)
+- [x] README.md mit Optionsvergleich
 - [ ] Nutzer: Schritt 1–4 (Prüfung, Veeam, Backup, Recovery-Stick)
 - [ ] Nutzer: Schritt 5–7 (Tausch, Restore, Kontrolle)
 - [ ] Ggf. WinRE-Partition verschieben, falls hinter C:
