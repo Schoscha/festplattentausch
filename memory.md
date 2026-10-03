@@ -23,4 +23,6 @@ Laptop hat nur einen M.2-Steckplatz, kein USB-M.2-Adapter vorhanden.
 
 ## Offene Punkte
 - USB-Stick ≥ 8 GB vorhanden (bestätigt 2026-10-03).
+- 2026-10-03: Schritt 1 angefragt. Laptop nicht erreichbar (nur „Detlef“, offline) → Nutzer führt Skript selbst aus.
+- 2026-10-03: Skripte per PowerShell-7-Parser geprüft (0 Fehler). Fix vorbereitung.ps1: SSD-Zustand per DeviceId statt Pipeline Disk→Get-PhysicalDisk.
 - Warte auf Bericht.txt aus Schritt 1.

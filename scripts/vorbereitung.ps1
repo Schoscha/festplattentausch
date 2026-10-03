@@ -88,7 +88,8 @@ if ($freiZielGB -lt $belegtGB) {
 # --- SSD-Zustand ---
 $text += Abschnitt 'SSD-Zustand'
 try {
-    $rc = $systemDisk | Get-PhysicalDisk | Get-StorageReliabilityCounter
+    $pd = Get-PhysicalDisk | Where-Object { $_.DeviceId -eq [string]$systemDisk.Number }
+    $rc = $pd | Get-StorageReliabilityCounter
     $text += "Verschleiss (%)      : $($rc.Wear)"
     $text += "Temperatur (C)       : $($rc.Temperature)"
     $text += "Lesefehler (unkorr.) : $($rc.ReadErrorsUncorrected)"
